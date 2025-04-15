@@ -48,7 +48,7 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = async () => {
+export const login = async (req,res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -74,6 +74,12 @@ export const login = async () => {
   }
 };
 
-export const logout = () => {
-  res.send("logout route");
+export const logout = (req,res) => {
+  try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.log("Error in logout controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
